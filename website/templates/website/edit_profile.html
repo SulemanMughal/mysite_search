@@ -1,0 +1,65 @@
+{% extends 'Base.html' %}
+{% load static %}
+{% block title %} Edit Profile {% endblock %}
+{% block content %}
+
+            <div class="card wr-25 mt-3 shadow border-0"  >
+                
+                <div class="card-header text-center font-weight-bold">
+                    <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                        Edit Profile
+                    </h4>
+                </div>
+                {% if form.errors %}
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <div class="alert alert-warning shadow alert-dismissible">
+                                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                    <strong>{{ error|escape }}</strong>
+                            </div>
+                        {% endfor %}
+                    {% endfor %}
+                    {% for error in form.non_field_errors %}
+                        <div class="alert alert-warning shadow alert-dismissible" >
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                            <strong>{{ error|escape }}</strong>
+                        </div>
+                    {% endfor %}
+                {% endif %}
+                <div class="card-body">
+                    <form action="{% url 'edit_profile' %}" method="POST">
+                    {% csrf_token %}
+                    
+                    <div class="form-group">
+                        <label for="exampleUserName1" >User Name</label>
+                        <input type="text" name="username" value="{{ request.user.username }}" maxlength="150" required id="id_username" class="form-control" autocomplete="off">
+                        <small id="usernameHelpInline" class="text-muted">
+                            Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                        </small>
+                    </div >
+
+                    <div class="form-group">
+                        <label for="exampleFirstName1" >First Name</label>
+                        <input type="text" name="first_name" value="{{ request.user.first_name }}" maxlength="30" id="id_first_name" class="form-control"autocomplete="off" >
+                    </div >
+                    
+
+                    <div class="form-group">
+                        <label for="exampleLastName1" >Last Name</label>
+                        <input type="text" name="last_name" value="{{ request.user.last_name }}" maxlength="150" id="id_last_name" class="form-control" autocomplete="off" >
+                    </div >
+                    <input type="hidden" name="password" value="{{ request.user.password }}" id="id_password">
+                    <p class="text-center mt-2">
+                        <button type="submit" class="btn btn-primary br-0 wb-200" value="Edit Profile">Save Changes</button>
+                    </p>
+                    
+                    </form>
+                    <p class="text-center mt-2">
+                        <a href="{% url 'change_password' %}">Change Password</a>
+                    </p>
+                    
+                    
+                </div>
+            </div>
+
+{% endblock content %}

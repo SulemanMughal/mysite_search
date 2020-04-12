@@ -1,0 +1,64 @@
+{% extends 'Base.html' %}
+
+{% load static %}
+
+
+{% block title %} Search MySQL Query {% endblock %}
+
+{% block content %}
+    <div class="card mt-3 wr-45 border-0 shadow position-left-100 mb-4">
+        <div class="card-header text-center font-weight-bold">
+            <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                MySQL Query
+            </h4>
+        </div>
+        {% if queryTitle %}
+            <div class="alert alert-success alert-dismissible shadow br-0">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong >{{ queryTitle }}</strong>
+            </div>
+        {% endif %}
+        <div class="card-body">
+            <form  action="." method="POST">
+                {% csrf_token %}
+                <select class="form-control form-control-lg">
+                    <option value="1">Database</option>
+                    <option value="2">Linux</option>
+                  </select>
+                  <div class="row mt-2">
+                    <div class="col-lg-10 pr-3">
+                        <input class="form-control form-control-lg" type="text" placeholder="Enter MySQL Query Statement" name="sql_query" autocomplete="off">
+                    </div>
+                    <div class="col-sm-2 pl-0 mt-1">
+                        <button type="button" class="btn btn-primary br-0 wb-100 font-weight-bold" value="submit" onclick="this.form.submit();">Execute</button>
+                    </div>
+                  </div>
+                    
+                    
+            </form>
+            {% if results %}
+                <table class="table mt-2 table-bordered">
+                    {% if results_columns %}
+                        <thead>
+                            <tr>
+                                {% for i in results_columns %}
+                                    <th scope="col">{{ i }}</th>
+                                {% endfor %}
+                            </tr>
+                        </thead>
+                    {% endif %}
+                    <tbody>
+                        {%  for i in results %}
+                            <tr>
+                                {% for j in i %}
+                                    <td class="bg-success text-white font-weight-bold">{{ j }}</td>
+                                {% endfor %}
+                            </tr>
+                        {% endfor %}
+                    </tbody>
+                </table>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}

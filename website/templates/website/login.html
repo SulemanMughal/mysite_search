@@ -1,0 +1,56 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block title %}Login{% endblock %}
+{% block content %}
+
+    
+
+    
+        <div class="card wr-25 mt-3 shadow border-0" >
+            <div class="card-header text-center font-weight-bold">
+                <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                    Login
+                </h4>
+            </div>
+            {% if messages %}
+            {% for message in messages %}
+            <div class="alert alert-warning alert-dismissible shadow">
+                <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                <strong style="font-size: 14px;">{{ message }}</strong>
+            </div>
+            {% endfor %}
+            {% endif %}
+            <div class="card-body">
+
+
+                <form action="{% url 'login' %}" method="POST">
+                    {% csrf_token %}
+                    <div class="form-group">
+                        <label for="exampleUserName1">Username or Email</label>
+                        <input type="text" name="username" required id="id_username" class="form-control"
+                            placeholder="Enter Username or Email" autocomplete="off">
+                    </div>
+                    <div class="form-group">
+                        <label class="exampleInputPassword1">Password</label>
+                        <input type="password" name="password" required id="id_password" class="form-control"
+                            placeholder="Enter Password">
+                        <div>
+
+                        </div>
+                        <br>
+                        <input type="hidden" next="next" value="{{ next }}">
+                        <p class="text-center mt-2">
+                            <button type="submit" class="btn btn-primary br-0 wb-100 font-weight-bold" value="Login">Login</button>
+                        </p>
+                            
+                        
+                </form>
+                <p class="text-center mt-2">
+                    <a href="{% url 'password_reset' %}">Forgotten your password</a>
+                </p>
+            </div>
+        </div>
+
+    
+
+{% endblock content %}

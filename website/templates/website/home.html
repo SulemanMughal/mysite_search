@@ -1,0 +1,28 @@
+{% extends 'Base.html' %}
+{% load static %}
+
+
+
+{% block content %}
+
+
+    
+
+    
+<div class="card wr-25 mt-3 border-0 shadow">
+    
+    <div class="card-body border-0">
+      <h5 class="card-title text-center font-weight-bold">MySQL Queries</h5>
+      <p class="card-text">MySQL is an open-source relational database management system. Its name is a combination of "My", the name of co-founder Michael Widenius's daughter, and "SQL", the abbreviation for Structured Query Language. </p>
+      {% if not request.user.is_authenticated %}
+        <p class="text-center">
+          <a href="{% url  'login' %}" class="btn btn-primary br-0 wb-100 font-weight-bold">Login</a>
+        </p>  
+      {% endif %}
+      
+    </div>
+  </div>
+
+
+
+{% endblock %}

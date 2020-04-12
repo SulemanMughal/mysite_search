@@ -1,0 +1,97 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block title %}Registration{% endblock %}
+
+    {% block content %}
+
+            <div class="card wr-25 mt-3 shadow border-0">
+                    <div class="card-header text-center font-weight-bold">
+                        <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                                Registration Form       
+                        </h4>
+                    </div>
+                          {% if form.errors %}
+                                {% for field in form %}
+                                    {% for error in field.errors %}
+                                        <div class="alert alert-warning alert-dismissible shadow">
+                                            <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                            <strong>{{ error|escape }}</strong>
+                                        </div>
+                                    {% endfor %}
+                                {% endfor %}
+                            {% endif %}
+
+                            {% if form_2.errors %}
+                            {% for field in form_2 %}
+                                {% for error in field.errors %}
+                                    <div class="alert alert-warning alert-dismissible shadow">
+                                        <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                                        <strong>{{ error|escape }}</strong>
+                                    </div>
+                                {% endfor %}
+                            {% endfor %}
+                        {% endif %}
+            
+                    
+                    <div class="card-body">
+                            <form action="{% url 'register' %}" method="POST">
+                                    {% csrf_token %}
+                                    <div  class="form-group">
+                                        <label for="id_username" >Username</label>
+                                        <input type="text" name="username" maxlength="150" required id="id_username" class="form-control"  placeholder="Enter Username" autocomplete="off">
+                                        <small id="usernameHelpInline" class="text-muted">
+                                                Required. 150 characters or fewer. Letters, digits and @/./+/-/_ only.
+                                              </small>
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label for="id_first_name">First name</label>
+                                            <input type="text" name="first_name" maxlength="30" id="id_first_name" class="form-control"  placeholder="Enter First Name" autocomplete="off">
+                                    </div>
+                                    
+                                    <div class="form-group">
+                                            <label for="id_last_name">Last name</label>
+                                            <input type="text" name="last_name" maxlength="150" id="id_last_name" class="form-control"  placeholder="Enter Last Name" autocomplete="off">
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label for="id_password">Password</label>
+                                            <input type="password" name="password" required id="id_password" class="form-control"  placeholder="Enter Password">
+                                            <small id="passwordHelpInline" class="text-muted">
+                                                    <ul>
+                                                        <li>Your password can&#39;t be too similar to your other personal information.</li>
+                                                        <li>Your password must contain at least 8 characters.</li>
+                                                        <li>Your password can&#39;t be a commonly used password.</li>
+                                                        <li>Your password can&#39;t be entirely numeric.</li>
+                                                    </ul>
+                                            </small>
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label for="id_password2">Confirm Password</label>
+                                            <input type="password" name="password2" required id="id_password2" class="form-control"  placeholder="Enter Confirm Password">
+                                            <small id="passwordHelpInline" class="text-muted">
+                                                    Both Passwords should be same.
+                                            </small>
+                                    </div>
+
+                                    <div class="form-group">
+                                            <label for="id_email">Email Address</label>
+                                            <input type="text" name="email" required id="id_email" class="form-control"  placeholder="Enter Email" autocomplete="off">
+                                            
+                                    </div>
+                                    <p class="text-center">
+                                        <button type="submit" class="btn btn-primary br-0 w-120" value="Sign Up">Get Register</button>
+                                    </p>
+                                            
+                                        
+                                </form>
+                    
+                    </div>
+            </div>
+        
+        </center>
+        </div>
+
+        <br>
+{% endblock content %}

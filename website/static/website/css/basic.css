@@ -1,0 +1,65 @@
+.w-500{
+    width:500px;
+}
+
+.br-0{
+    border-radius:0px  !important;
+}
+
+.form-control,
+.form-control:focus,
+.form-control:active {
+  outline: none !important;
+  box-shadow: none !important;
+  border: 1px solid #ced4da;
+  border-radius: 0px;
+
+}
+
+.btn:focus,
+.btn:active {
+  outline: none !important;
+  box-shadow: none !important;
+}
+
+.wb-100{
+    width:100px !important;
+}
+
+.wr-18{
+    width:18rem;
+}
+
+.wr-22{
+    width:22rem;
+}
+
+
+.wr-25{
+    width:25rem;
+}
+
+.wb-120{
+    width:120px !important;
+}
+
+.wb-200{
+    width: 200px  !important;
+}
+
+input::-webkit-inner-spin-button, 
+input::-webkit-outer-spin-button{ 
+    -webkit-appearance:none; 
+}
+
+input[type="number"]{ 
+    -moz-appearance:textfield; 
+}
+
+.wr-45{
+    width:45rem;
+}
+
+.position-left-100{
+    left:-100px !important;
+}

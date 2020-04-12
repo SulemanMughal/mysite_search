@@ -1,0 +1,78 @@
+{% extends 'Base.html' %}
+
+
+{% block title %}Saved Query{% endblock %}
+
+{% block  content %}
+
+<style>
+    input[name="sql_query"]
+    {
+        display: none;
+    }
+    .sql_span{
+        cursor: pointer;
+    }
+
+    form{
+        cursor: pointer;
+    }
+</style>
+
+    <div class="card mt-3 wr-25 shadow border-0">
+        <div class="card-header text-center font-weight-bold">
+            <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                Saved Queries 
+            </h4>
+        </div>
+        <div class="card-body">
+            {% if mySelfQueries %}
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Saved Queries By Myself
+                </a>
+                <div class="list-group">
+                    {% for i in mySelfQueries %}
+                        <form action="{% url 'MYSQL' %}" method="POST" >
+                            {% csrf_token %}
+                            <input  name="sql_query"  value="{{ i.query }}" >
+                            <button type="button" class="btn btn-primary list-group-item list-group-item-action" value="submit" onclick="this.form.submit();">{{ i.query }} : {{ i.stamp|timesince }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            {% else %} 
+                <a href="#" class="list-group-item list-group-item-action active">
+                    Saved Queries By Myself
+                </a>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        No Query Saved Yet.
+                    </a>
+                </div>
+            {% endif %}
+            {% if Queries %}
+                <a href="#" class="list-group-item list-group-item-action active mt-3">
+                    Saved Queries By Other Users
+                </a>
+                <div class="list-group">
+                    {% for i in Queries %}
+                        <form action="{% url 'MYSQL' %}" method="POST" >
+                            {% csrf_token %}
+                            <input  name="sql_query"  value="{{ i.query }}" >
+                            <button type="button" class="btn btn-primary list-group-item list-group-item-action" value="submit" onclick="this.form.submit();">{{ i.query }} : {{ i.stamp|timesince }}</button>
+                        </form>
+                    {% endfor %}
+                </div>
+            {% else %}
+                <a href="#" class="list-group-item list-group-item-action active mt-3">
+                    Saved Queries By Other Userss
+                </a>
+                <div class="list-group">
+                    <a href="#" class="list-group-item list-group-item-action">
+                        No Query Saved Yet.
+                    </a>
+                </div>
+            {% endif %}
+        </div>
+    </div>
+
+{% endblock %}
