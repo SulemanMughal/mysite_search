@@ -57,6 +57,13 @@
                         {% endfor %}
                     </tbody>
                 </table>
+            {% else %}
+                {% if page_load %}
+                <div class="alert alert-warning alert-dismissible shadow">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a>
+                    <strong style="font-size: 14px;">Not Record Found.</strong>
+                </div>
+                {% endif %}
             {% endif %}
         </div>
     </div>

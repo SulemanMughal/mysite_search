@@ -134,11 +134,13 @@ def change_password(request):
 @login_required
 def mySQL_view(request):
     if request.method == "POST" : 
+        columns = []
         # print(connection.cursor())
         try:
             with connection.cursor() as cursor:
                 # print(cursor.execute("select * from fruit"))
                 # print(connection.queries)
+                obj, created = QueryResult.objects.get_or_create(user=request.user, query= request.POST["sql_query"])
                 cursor.execute(request.POST["sql_query"])
                 # print(cursor.description)
                 columns = [col[0] for col in cursor.description]
@@ -146,17 +148,17 @@ def mySQL_view(request):
                 # print(dict(zip(columns, row)))
                 row = cursor.fetchall()
                 # print([dict(zip(columns, row)) for row in cursor.fetchall()])
-                obj, created = QueryResult.objects.get_or_create(user=request.user, query= request.POST["sql_query"])
         except:
             row = None
         # print(list(row))
         context={
             'queryTitle' : request.POST.get("sql_query", "None") ,
             'results' : row,
-            'results_columns': columns
+            'results_columns': columns,
+            'page_load': True
         }
         return render(request, "website/Query_page.html", context )
-    return render(request, "website/Query_page.html" )
+    return render(request, "website/Query_page.html", {'page_load': False})
 
 @login_required
 def savedQuery_View(request):
