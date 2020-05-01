@@ -143,7 +143,7 @@ MEDIA_ROOT=os.path.join(os.path.dirname(BASE_DIR),'media')
 
 #------------------------------------------------------------------------
 #Email Setting...
-EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_HOST_USER = 'asifa.packtpub@gmail.com'
