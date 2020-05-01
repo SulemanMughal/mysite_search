@@ -8,6 +8,12 @@
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/4.3.0/css/font-awesome.min.css">
+    <link rel="stylesheet" href="https://fonts.googleapis.com/css?family=Lato:300,400,700">
+    <link rel='dns-prefetch' href='//use.fontawesome.com' />
+    <link rel='stylesheet' id='fontawesome-css' href='https://use.fontawesome.com/releases/v5.2.0/css/all.css?ver=5.2.0'
+        type='text/css' media='all' />
+
 
     <link rel="stylesheet" href="{% static 'website\css\basic.css' %}">
     <title>{% block title %}MySQL Queries{% endblock %}</title>
@@ -21,13 +27,10 @@
       </a>
       
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
-          {% if request.user.is_authenticated %}
+                    {% if request.user.is_authenticated %}
           <ul class="navbar-nav mr-auto">
             <li class="nav-item">
-              <a class="nav-link" href="{% url 'MYSQL' %}">Search Query</a>
-            </li>
-            <li class="nav-item">
-              <a class="nav-link" href="{% url 'SavedQuery' %}">Saved Query</a>
+              <a class="nav-link" href="{% url 'UserLogActions_URL' %}">Logs</a>
             </li>
           </ul>
           {% endif %}
@@ -37,10 +40,13 @@
               <a class="nav-link" href="{% url 'dashboard' %}">Dashboard</a>
             </li>
             <li class="nav-item">
+              <a class="nav-link" href="{% url 'profile' %}">{{ request.user.username }}</a>
+            </li>
+            <li class="nav-item">
               <a class="nav-link" href="{% url 'change_password' %}">Change Password</a>
             </li>  
             <li class="nav-item">
-                <a class="nav-link" href="{% url 'logout' %}">Logout</a>
+                <a class="nav-link" href="{% url 'logout' %}">Logout </a>
               </li>
             {% else %}
               <li class="nav-item">
@@ -55,17 +61,117 @@
         </div>
       </nav>
 
-      <div class="mx-auto w-500">
+      
       {% block content %}
 
       {% endblock %}
 
-      </div>
+
 
     <!-- Optional JavaScript -->
     <!-- jQuery first, then Popper.js, then Bootstrap JS -->
+    
     <script src="https://code.jquery.com/jquery-3.3.1.slim.min.js" integrity="sha384-q8i/X+965DzO0rT7abK41JStQIAqVgRVzpbzo5smXKp4YfRvH+8abtTE1Pi6jizo" crossorigin="anonymous"></script>
     <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.14.7/umd/popper.min.js" integrity="sha384-UO2eT0CpHqdSJQ6hJty5KVphtPhzWj9WO1clHTMGa3JDZwrnQq4sF86dIHNDz0W1" crossorigin="anonymous"></script>
     <script src="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/js/bootstrap.min.js" integrity="sha384-JjSmVgyd0p3pXB1rRibZUAYoIIy6OrQ6VrjIEaFf/nJGzIxFDsf4x0xIM+B07jRM" crossorigin="anonymous"></script>
+    <script defer src="https://use.fontawesome.com/releases/v5.0.13/js/fontawesome.js"
+    integrity="sha384-6OIrr52G08NpOFSZdxxz1xdNSndlD4vdcf/q2myIUVO0VsqaGHJsB0RaBE01VTOY"
+    crossorigin="anonymous"></script>
+
+
+
+
+
+<script>
+
+$("#element").toast(
+        {
+          'autohide':false
+        }
+        );
+        $("#element").toast('show');
+        $('#element').on('hidden.bs.toast', function () {
+          $('div[aria-live="polite"]').css("display", "none");
+})
+
+
+</script>
+
+
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.js"></script>
+
+    <script>
+ 
+$(document).ready(function()
+{
+
+  // Execute Query
+  $(document).on("click", ".dropdown-item", function(e)
+  {
+      var i = $(this).attr("id").split("_");
+      if (i.length == 3){
+        if (i[2] == "RunButton"){
+          var data = $(this).attr("data-url")
+          var data_1 = $("#" + data + "_span");
+          var data_2 = $("#" + data + "_span_time");
+          
+          e.preventDefault();
+          $.ajax({
+            type: 'GET',
+            url: "{% url 'ExecuteDB_Specific_URL' %}",
+            data: {"data": data},
+            success: function (response) {
+                if(!response["valid"]){
+                    alert("Can not update results");
+                }
+                else{
+                  data_1.html(response["data"]);
+                  data_2.html(response['time']);
+                }
+            },
+            error: function (response) {
+                console.log(response)
+            }
+        });
+        }
+      }
+      
+  });
+
+
+
+
+});
+
+$(document).ready(function()
+{
+  
+$(".hover-element").mouseover(function()
+{
+    var i = $(this).attr("id");
+    var j = "#" + i + " .dropdown:nth-child(1)";
+    var k = "#" + i + " .dropdown:nth-child(2)";
+    $(j).show();
+    $(k).show();
+});
+
+
+$(".hover-element").mouseleave(function()
+{
+  var i = $(this).attr("id");
+    var j = "#" + i + " .dropdown:nth-child(1)";
+    var k = "#" + i + " .dropdown:nth-child(2)";
+    $(j).hide();
+    $(k).hide();
+});
+
+
+
+
+});
+
+
+
+    </script>
   </body>
 </html>

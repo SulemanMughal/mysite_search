@@ -31,4 +31,21 @@ urlpatterns = [
     # Saved Query URL
     url(r'^saved-query/$', views.savedQuery_View, name="SavedQuery"),
 
+    # Profile URL
+    url(r'^profile/$', views.profile, name="profile"),
+
+    # Create Results Color Range URL
+    url(r'^create-color-range/$', views.savedColorRange, name="CreateColorRange"),
+    
+    
+    # Execute Specific Query From DB 1
+    path('execute-specific-query-DB/', views.updateDBResults, name="ExecuteDB_Specific_URL"),
+
+
+    # upDateQueryDB
+    path('update-specific-query-DB/', views.upDateQueryDB, name="upDateQueryDB_URL"),
+    
+    path('view-user-actions',views.UserLogActions, name="UserLogActions_URL"),
+    
+    path('refresh-query-row/<int:configurationRules_id>/<int:configResultsDataBase_id>/', views.refreshQueryRow, name="refreshQueryRow_URL")
 ]

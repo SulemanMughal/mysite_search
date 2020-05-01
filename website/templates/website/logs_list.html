@@ -1,0 +1,27 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block title %}Logs{% endblock %}
+{% block content %}
+
+<div class="card">
+    <div class="card-body">
+        {% if objects %}
+        <div class="list-group">
+            {% for log in objects %}
+                <a href="#" 
+                class="list-group-item list-group-item-action {% if log.action_flag == 3 %} list-group-item-danger {% elif log.action_flag == 1  %} list-group-item-success {% elif log.action_flag == 2 %} list-group-item-warning {% endif %}" 
+                title="{{ log.action_time }}">
+                {% if log.action_flag == 3 %} DELETION RESULTS {% elif log.action_flag == 1  %} ADDITION RESULTS {% elif log.action_flag == 2 %} CHANGE  RESULTS {% endif %}
+                <span class="font-weight-bold ml-4">{{ log.action_time|date:"F j, Y, h:i A" }}</span>
+        </a>
+            {% endfor %}
+        </div>
+        {% else %}
+        <div class="list-group">
+            <a href="#" class="list-group-item list-group-item-action">No Logs Yet</a>
+        </div>
+        {% endif %}
+    </div>
+  </div>
+
+{% endblock %}

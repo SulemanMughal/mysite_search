@@ -1,0 +1,61 @@
+{% extends "Base.html" %}
+{% load static %}
+{% block title %}Profile{% endblock %}
+{% block content %}
+    
+
+<div class="mx-auto w-500">
+
+
+    <div class="card border-0 mt-3 shadow wr-25">
+        <div class="card-header text-center font-weight-bold">
+            <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
+                Profile
+            </h4>
+        </div>
+        {% if messages %}
+            {% for message in messages %}
+                <div class="alert alert-warning alert-dismissible shadow mb-0">
+                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>{{ message }}</strong>
+                </div>
+            {% endfor %}
+        {% endif %}
+        <div class="card-body">
+            <table class="table">
+                <tbody>
+                  <tr>
+                    <td>Username</td>
+                    <td>{{ request.user.username }}</td>
+                  </tr>
+                  <tr>
+                    <td>First Name</td>
+                    <td>{{ request.user.first_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Last Name</td>
+                    <td>{{ request.user.last_name }}</td>
+                  </tr>
+                  <tr>
+                    <td>Email</td>
+                    <td>{{ request.user.email }}</td>
+                  </tr>
+                  <tr>
+                    <td>Date Joined</td>
+                    <td>{{ request.user.date_joined|timesince }}</td>
+                  </tr>
+                  <tr>
+                    <td>Last Login</td>
+                    <td>{{ request.user.last_login|timesince }}</td>
+                  </tr>
+                </tbody>
+              </table>
+              <p class="text-center mt-2">
+                <a href="{% url 'edit_profile' %}" class="btn btn-primary br-0 wb-200">Edit Profile</a>
+            </p>
+        </div>
+
+    </div>
+
+  </div>
+
+{% endblock content %}

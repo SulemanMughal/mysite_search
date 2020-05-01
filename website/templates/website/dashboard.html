@@ -2,56 +2,455 @@
 {% load static %}
 {% block title %}Dashboard{% endblock %}
 {% block content %}
+
+
+<style>
+  .dropdown-toggle::after {
+    display: none;
+    margin-left: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid;
+    border-right: .3em solid transparent;
+    border-bottom: 0;
+    border-left: .3em solid transparent;
+  }
+
+  .font-size-20 {
+    font-size: 20px;
+  }
+
+  .dropdown-menu{
+    min-width: 5rem;
+  }
+
+.hover-element .dropdown{
+  display: none;
+}
+
+
+.hover-element-2 .dropdown{
+  display: none;
+}
+
+.dropleft .dropdown-toggle::before {
+    display: none;
+    margin-right: .255em;
+    vertical-align: .255em;
+    content: "";
+    border-top: .3em solid transparent;
+    border-right: .3em solid;
+    border-bottom: .3em solid transparent;
+}
+
+.dropdown-menu ::after{
+  min-width: 30rem !important;
+}
+
+</style>
+
+           
+<style>
+
+  .form-control[type="text"]::selection{
+    background-color: yellow;
+    color: red;
     
+  }
+
+  input[type="text"]:focus{
+    border: 2px solid green;
+  }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.5.0/jquery.js"></script>
 
 
-    <div class="card border-0 mt-3 shadow wr-25">
-        <div class="card-header text-center font-weight-bold">
-            <h4 class="card-title font-weight-bold p-0 mt-0 mb-0 text-primary">
-                Dashbaord
-            </h4>
+<script>
+  
+
+
+  function subForm(x){
+    var i =x.parent().attr("id");
+    $("#" + i + "").submit(function (e) {
+      var j = $("#" + i + "");
+      var serializedData = j.serialize();
+      var elem = $( "#" + i + " input:eq(1)");
+      var elem_2 = $( "#" + i + " input:eq(2)");
+      var span_elem = $("#" + elem_2.val() + "_span");
+      var data_2 = $("#" + elem_2.val() + "_span_time");
+      console.log(span_elem);
+    e.preventDefault();
+
+    $.ajax({
+        type: 'POST',
+        url: "{% url 'upDateQueryDB_URL' %}",
+         data: serializedData,
+         success: function (response) {
+           elem.val(response["query"]);
+          span_elem.html(response["data"]);
+          data_2.html(response['time']);
+         },
+        error: function (response) {
+            console.log(response);
+         }
+     });
+
+
+
+
+    });
+
+}
+
+
+
+
+
+function subForm_2(x){
+    var i =x.parent().attr("id");
+    console.log(i);
+    console.log("=================================");
+    $("#" + i + "").submit(function (e) {
+    e.preventDefault();
+
+
+
+    });
+
+}
+
+
+
+
+</script>
+
+
+
+
+{% if messages %}
+
+{% for message in messages %}
+<div class="toast mt-2 ml-5 shadow" id="element">
+  <div class="toast-header">
+    <strong class="mr-auto"><i class="far fa-bell"></i> Notification</strong>
+    <button type="button" class="ml-2 mb-1 close" data-dismiss="toast" aria-label="Close">
+      <span aria-hidden="true">&times;</span>
+    </button>
+  </div>
+  <div class="toast-body bg-light">
+    {{ message }}
+  </div>
+</div>
+{% endfor %}
+
+{% endif %}
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModal" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width:700px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Configuration Rules</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'dashboard' %}">
+          <button type="button" class="btn btn-primary br-0" data-toggle="modal"
+            data-target="#exampleModalColorRanger">Make Results Color Range</button>
+          {% csrf_token %}
+          {% for field in form %}
+          <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            <small id="emailHelp" class="form-text text-muted">{{ field.help_text }}</small>
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary br-0" value="submit">Make Result Color Range</button>
+
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+
+
+<!-- Modal -->
+<div class="modal fade" id="exampleModalColorRanger" tabindex="-1" role="dialog" aria-labelledby="exampleModalLabel"
+  aria-hidden="true">
+  <div class="modal-dialog" role="document">
+    <div class="modal-content" style="width:700px;">
+      <div class="modal-header">
+        <h5 class="modal-title" id="exampleModalLabel">Create Result Color Range</h5>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">&times;</span>
+        </button>
+      </div>
+      <div class="modal-body">
+        <form method="POST" action="{% url 'CreateColorRange' %}">
+          {% csrf_token %}
+          {% for field in form_2 %}
+          <div class="form-group">
+            <label>{{ field.label }}</label>
+            {{ field }}
+            <small id="emailHelp" class="form-text text-muted">{{ field.help_text }}</small>
+          </div>
+          {% endfor %}
+          <button type="submit" class="btn btn-primary br-0" value="submit">Create Results Color Range</button>
+        </form>
+      </div>
+    </div>
+  </div>
+</div>
+
+<div class="mx-auto w-1300">
+  <div class="card wr-80 mt-3 border-0 bg-transparent shadow mb-3">
+
+
+    <div class="card-header text-center font-weight-bold bg-transparent border-0">
+    </div>
+    <div class="card-body">
+      <div class="row">
+        <div class="col">
+          <button class="btn btn-primary border-0 bg-transparent text-dark p-0" data-toggle="modal"
+            data-target="#exampleModal"><i class="fas fa-plus-circle fa-1_5px"></i></button>
+          <a href="{% url 'dashboard' %}" class="btn btn-primary border-0 bg-transparent text-dark p-0"><i
+              class="fas fa-redo ml-2 fa-1_5px"></i></a>
         </div>
-        {% if messages %}
-            {% for message in messages %}
-                <div class="alert alert-warning alert-dismissible shadow mb-0">
-                    <a href="#" class="close" data-dismiss="alert" aria-label="close">&times;</a><strong>{{ message }}</strong>
+      </div>
+
+
+<!-- Results Display Section -->
+
+{% if configurations %}
+  {% for key, values in configurations.items %}
+
+      <!-- Section for DB -->
+
+      <div class="row">
+        <h4 class="card-title ml-3 mt-3 mb-0">{{ key }}</h4>
+      </div>
+
+      <div class="row">
+        <div class="col">
+
+        </div>
+        
+        <!-- DB 1 Header -->
+        <div class="col text-center">
+          <h5 class="card-title ml-3 mt-2 font-weight-bold font-size-18px">DB 1</h5>
+        </div>
+        <!-- End DB 1 Header  -->
+
+
+        <!-- DB 2 Header -->
+        <div class="col text-center">
+          <h5 class="card-title ml-3 mt-2 font-weight-bold font-size-18px">DB 2</h5>
+        </div>
+
+        <!-- End DB 2 Header -->
+
+        <!-- Padding for spaces -->
+        <div class="col text-center">
+          <h5 class="card-title ml-3 mt-2 font-weight-bold font-size-18px"></h5>
+        </div>
+
+        <!-- End padding spaces -->
+
+
+        <div class="col-sm-1 pl-0 pr-0 text-center">
+          <button class="btn btn-primary border-0 bg-transparent text-dark p-0 mt-2"><i
+              class="fas fa-plus-circle fa-1_5px"></i></button>
+          <button class="btn btn-primary border-0 bg-transparent text-dark p-0 mt-2"><i
+              class="fas fa-redo ml-2 fa-1_5px"></i></button>
+        </div>
+      </div>
+
+      <!-- Results Section for DB-->
+      {% for stats in values %}
+      <div class="row mb-0 mt-0">
+        <div class="col">
+          <h5
+            class="card-title ml-3 font-size-18px mb-0 mt-0 bg-light p-3 border border-left-dark border-right-0 border-top-0 border-bottom-dark border-bottom-width-5 border-left-style-solid border-left-width-5 border-left-color-mediumorchid ">
+            {{ stats.name }}</h5>
+        </div>
+
+
+        {% for results in stats.get_current_object_results %}
+
+
+
+
+
+
+        <!-- results for DB sub section 1 -->
+
+        <div class="hover-element col pr-0 text-center list-group-item list-group-item-action p-1 pt-2 font-weight-bold" id="{{ stats.id }}{{ results.id }}_DB1">
+          <div class="dropdown dropleft">
+
+              <button type="button" title="Edit Current Query"
+                class="btn ml-1 btn-primary rounded rounded-circle dropdown-toggle float-right p-0 pb-2 pl-2 pr-2 font-weight-bold"
+                id="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Edit" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">.</button>
+              
+                <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Edit" style="min-width:30rem !important;">
+                  <span class="ml-2 mb-2">Edit Query</span>
+                    <form method="POST" id="{{ stats.id }}{{ results.id }}DB1_form">
+                      {% csrf_token %}
+                    <input type="text" class="form-control" autocomplete="off" id="{{ stats.id }}{{ results.id }}DB1_btn" name="query1" value="{{ results.query_store_DB_1 }}" onchange="subForm($(this));">
+                    <input type="hidden" class="form-control"  name="query" value="{{ stats.id }}_{{ results.id }}_DB1">
+                  </form>
+                    
+                  
+                  
+                  
                 </div>
-            {% endfor %}
-        {% endif %}
-        <div class="card-body">
-            <table class="table">
-                <tbody>
-                  <tr>
-                    <td>Username</td>
-                    <td>{{ request.user.username }}</td>
-                  </tr>
-                  <tr>
-                    <td>First Name</td>
-                    <td>{{ request.user.first_name }}</td>
-                  </tr>
-                  <tr>
-                    <td>Last Name</td>
-                    <td>{{ request.user.last_name }}</td>
-                  </tr>
-                  <tr>
-                    <td>Email</td>
-                    <td>{{ request.user.email }}</td>
-                  </tr>
-                  <tr>
-                    <td>Date Joined</td>
-                    <td>{{ request.user.date_joined|timesince }}</td>
-                  </tr>
-                  <tr>
-                    <td>Last Login</td>
-                    <td>{{ request.user.last_login|timesince }}</td>
-                  </tr>
-                </tbody>
-              </table>
-              <p class="text-center mt-2">
-                <a href="{% url 'edit_profile' %}" class="btn btn-primary br-0 wb-200">Edit Profile</a>
-            </p>
+                
+          </div>  
+         
+          
+          <div class="dropdown dropleft"> 
+            <button type="button" title="Execute Current Query"
+            class="btn btn-danger  rounded rounded-circle float-right p-0 pb-2 pl-2 pr-2 font-weight-bold"
+            id="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Run" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">.</button>
+
+          
+            <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Run">
+              <button class="dropdown-item list-group-item list-group-item-action"  id="dropdownMenuButton{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_RunButton" data-url="{{ stats.id }}_{{ results.id }}_DB1" >Execute Query</button>
+            </div>
+  
+          </div>
+
+           
+            <span id="{{ stats.id }}_{{ results.id }}_DB1_span">{{ results.results_store_DB_1 }}</span>
+            <br>
+            <span id="{{ stats.id }}_{{ results.id }}_DB1_span_time" class="text-secondary font-weight-normal">{{ results.results_store_DB_1_timestamp|date:"F j, Y, h:i A" }}</span>
+
+
         </div>
+
+        <!-- END results for DB sub section 1 -->
+
+
+        <!-- results for DB sub section 2 -->
+
+        <div class="hover-element col pr-0 dropdown text-center list-group-item list-group-item-action p-1 pt-2 font-weight-bold" id="{{ stats.id }}{{ results.id }}_DB2">
+          
+          <div class="dropdown dropleft">
+
+            <button type="button" title="Edit Current Query"
+              class="btn ml-1 btn-primary rounded rounded-circle dropdown-toggle float-right p-0 pb-2 pl-2 pr-2 font-weight-bold"
+              id="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Edit_DB_2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">.</button>
+            
+              <div class="dropdown-menu" aria-labelledby="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Edit_DB_2" style="min-width:30rem;">
+                <span class="ml-2 mb-2">Edit Query</span>
+                <form  method = "POST" id="{{ stats.id }}{{ results.id }}DB2_form">
+                  {% csrf_token %}
+                  <input type="text" class="form-control" value="{{ results.query_store_DB_2 }}" autocomplete="off" name="query1" onchange="subForm($(this));">
+                  <input type="hidden" class="form-control"  name="query" value="{{ stats.id }}_{{ results.id }}_DB2">
+                </form>
+                
+              </div>
+            
+        </div>  
+       
+        
+        <div class="dropdown dropleft">
+          <button type="button" title="Execute Current Query"
+          class="btn btn-danger  rounded rounded-circle float-right p-0 pb-2 pl-2 pr-2 font-weight-bold"
+          id="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Run_DB_2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false">.</button>
+
+        
+          <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton_{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_Run_DB_2">
+            <button class="dropdown-item list-group-item list-group-item-action"  id="dropdownMenuButton{{ stats.name|slugify }}_{{ stats.id }}{{ results.id }}_RunButton" data-url="{{ stats.id }}_{{ results.id }}_DB2" >Execute Query</button>
+          </div>
+
+        </div>
+
+        <span id="{{ stats.id }}_{{ results.id }}_DB2_span">{{ results.results_store_DB_2 }}</span>
+        <br>
+        <span id="{{ stats.id }}_{{ results.id }}_DB2_span_time" class="text-secondary font-weight-normal">{{ results.results_store_DB_2_timestamp|date:"F j, Y, h:i A" }}</span>
+
+        </div>
+
+
+        <!-- END results for DB sub section 2 -->
+
+
+
+
+
+
+
+
+        <!-- Results Padding section for db -->
+        <div class="col text-center pl-0 visibility-hidden">
+          <h5 class="card-title mt-0 font-size-18px bg-success p-2 border text-white mb-0"></h5>
+        </div>
+
+        <!-- END Results Padding section for db -->
+
+        <!-- RIght Side Features for DB -->
+        <div class="col-sm-1 pl-0 pr-0 text-center">
+          <div class="ml-4 pl-1 row">
+            <div class="dropdown p-0 m-0 dropleft">
+ 
+              <button class="btn btn-primary border-0 bg-transparent dropdown-toggle text-dark p-0 mt-2"   type="button" id="dropdownMenuButton_1" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> <i
+                class="far fa-edit fa-1_5px"></i></button>
+  
+              <div class="dropdown-menu p-0 w-100" aria-labelledby="dropdownMenuButton_1" style="min-width:30rem;" >
+                <form  action="{% url 'refreshQueryRow_URL' stats.id results.id  %}" method="POST">
+                  {% csrf_token %}
+                  <input type="text" title="Edit Query" class="form-control" value="{{ stats.source_query }}" autocomplete="off" name="query1">
+                </form>
+              </div>
+            </div>
+  
+  
+            <div class="dropdown p-0 m-0 dropleft">
+              
+  
+              <button class="btn btn-primary border-0 bg-transparent dropdown-toggle text-dark p-0 mt-2" type="button" id="dropdownMenuButton_2" data-toggle="dropdown" aria-haspopup="true" aria-expanded="false"> 
+                <i
+                class="fas fa-redo ml-2 fa-1_5px"></i>
+              </button>
+  
+              <div class="dropdown-menu p-0" aria-labelledby="dropdownMenuButton_2">
+                <a class="dropdown-item list-group-item list-group-item-action" href="{% url 'refreshQueryRow_URL' stats.id results.id %}">Refresh</a>
+                
+              </div>
+            </div>
+          </div>
+          
+        </div>
+        <!-- END RIght Side Features for DB -->
+
+        {% endfor %}
+
+      </div>
+      {% endfor %}
+      <!-- End of Result Section for DB-->
+
+      <!-- End Section for DB -->
+
+
+        {% endfor %}
+      
+      {% endif %}
+
+<!-- End Results Display Section -->
 
     </div>
+  </div>
+</div>
+
+
+
+
+
+
+
 
 {% endblock content %}
